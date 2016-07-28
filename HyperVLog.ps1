@@ -59,8 +59,9 @@ if ($myWindowsPrincipal.IsInRole($adminRole))
     [System.Diagnostics.Process]::Start($newProcess) | Out-Null;
     Exit;
     }
-if((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Management-PowerShell) -and (Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V))
+if((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Management-PowerShell).State.ToString() -eq "Enabled" -and (Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V).State.ToString() -eq "Enabled")
 {
+
 cls
     Write-Host "Hyper-V Rolle und PowerShellModul ist installiert" -ForegroundColor Green
     if ($Start -eq $true -and $Stop -eq $false)
@@ -118,7 +119,10 @@ cls
     }
 
 }
-      
+else
+{
+    Write-Host -ForegroundColor Red "Hyper-V ist auf dem System nicht existent"
+}       
 
     
 
