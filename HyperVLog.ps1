@@ -59,8 +59,10 @@ if ($myWindowsPrincipal.IsInRole($adminRole))
     [System.Diagnostics.Process]::Start($newProcess) | Out-Null;
     Exit;
     }
-
-
+if((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Management-PowerShell) -and (Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V))
+{
+cls
+    Write-Host "Hyper-V Rolle und PowerShellModul ist installiert" -ForegroundColor Green
     if ($Start -eq $true -and $Stop -eq $false)
     {
         $exshudeled = Get-ScheduledJob
@@ -68,8 +70,9 @@ if ($myWindowsPrincipal.IsInRole($adminRole))
         {
             if($shed.Name -eq "HyperVLog")
             {
-                cls
-                Write-Host -ForegroundColor Yellow "Es ist schon ein Task angelegt"
+                
+                Write-Host -ForegroundColor Yellow "Es ist schon ein Task angelegt mit dem Namen: " -NoNewline
+                Write-Host -ForegroundColor Cyan $shed.Name 
                 Write-Host -ForegroundColor Yellow "Zum beenden des Loggings HyperVLog.ps1 -Stop ausführen"
                 Read-Host "..........Zum beenden beliebige Taste drücken............." 
                 exit 2
@@ -114,7 +117,7 @@ if ($myWindowsPrincipal.IsInRole($adminRole))
         Write-Host -ForegroundColor Yellow "Entweder -Start oder -Stop verwenden "
     }
 
-
+}
       
 
     
